@@ -39,7 +39,16 @@ export class BasePool implements Pool {
     output: Ticker,
     amount: TokenBalance
   ): TokenBalance {
-    return 1;
+    let out = this.out_given_in(time, input, output, amount);
+
+    // we know these are both defined because of the above fn
+    let initial_input_balance = this.balances.get(input);
+    let initial_output_balance = this.balances.get(output);
+
+    this.balances.set(input, initial_input_balance! + amount);
+    this.balances.set(output, initial_output_balance! - out);
+
+    return out;
   }
 
   out_given_in(
@@ -57,7 +66,9 @@ export class BasePool implements Pool {
       throw new Error("Invalid token, out_given_in");
     }
 
-    return 1;
+    let power = input_weight / output_weight;
+    let frac = amount / (input_balance + amount);
+    return output_balance * (1 - frac ** power);
   }
 
   in_given_out(
