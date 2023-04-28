@@ -12,6 +12,7 @@ export interface Pool {
   tokens: Array<Ticker>;
   balances: Map<Ticker, number>;
   rebalance: Rebalance;
+  totalLiquidity: number;
 
   /**
    *
@@ -23,17 +24,20 @@ export interface Pool {
 
   /**
    *
-   * @param time
-   * @param input
-   * @param output
-   * @param amount
+   * @param time block height
+   * @param input ticker
+   * @param output ticker
+   * @param amount amount of input token
+   * @returns amount of output token
+   *
+   * mutates balances
    */
   swap_in(
     time: number,
     input: Ticker,
     output: Ticker,
     amount: TokenBalance
-  ): void;
+  ): TokenBalance;
 
   /**
    *
@@ -41,6 +45,7 @@ export interface Pool {
    * @param input
    * @param output
    * @param amount
+   * pure function
    */
   out_given_in(
     time: number,
@@ -55,6 +60,7 @@ export interface Pool {
    * @param input
    * @param output
    * @param amount
+   * pure function
    */
   in_given_out(
     time: number,
@@ -69,6 +75,7 @@ export interface Pool {
    * @param input
    * @param output
    * @param price
+   * pure function
    */
   in_given_price(
     time: number,

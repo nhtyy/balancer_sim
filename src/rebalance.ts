@@ -24,7 +24,7 @@ export class LinearRebalance implements Rebalance {
     let start_weight = this.start_weights.get(token);
 
     if (target_weight === undefined || start_weight === undefined) {
-      throw new Error("Invalid token");
+      throw new Error("Invalid token, scalar");
     }
 
     return (target_weight - start_weight) / this.duration;
@@ -34,7 +34,7 @@ export class LinearRebalance implements Rebalance {
     let start_weight = this.start_weights.get(token);
 
     if (start_weight === undefined) {
-      throw new Error("Invalid token");
+      throw new Error("Invalid token, weight");
     }
 
     return start_weight + this.scalar(token) * time;

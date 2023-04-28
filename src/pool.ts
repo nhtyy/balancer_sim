@@ -6,6 +6,7 @@ export class BasePool implements Pool {
   tokens: Array<Ticker>;
   balances: Map<Ticker, number>;
   rebalance: Rebalance;
+  totalLiquidity: number;
 
   constructor(
     tokens: Array<Ticker>,
@@ -15,6 +16,7 @@ export class BasePool implements Pool {
     this.tokens = tokens;
     this.balances = balances;
     this.rebalance = rebalance;
+    this.totalLiquidity = 0;
   }
 
   spot_price(time: number, input: Ticker, output: Ticker): number {
@@ -24,7 +26,7 @@ export class BasePool implements Pool {
     let output_balance = this.balances.get(output);
 
     if (input_balance === undefined || output_balance === undefined) {
-      throw new Error("Invalid token");
+      throw new Error("Invalid token, spot_price");
     }
 
     return (input_balance * input_weight) / (output_balance * output_weight);
@@ -35,7 +37,7 @@ export class BasePool implements Pool {
     input: Ticker,
     output: Ticker,
     amount: TokenBalance
-  ): number {
+  ): TokenBalance {
     return 1;
   }
 
@@ -45,6 +47,15 @@ export class BasePool implements Pool {
     output: Ticker,
     amount: TokenBalance
   ): TokenBalance {
+    let input_weight = this.rebalance.weight(time, input);
+    let output_weight = this.rebalance.weight(time, output);
+    let input_balance = this.balances.get(input);
+    let output_balance = this.balances.get(output);
+
+    if (input_balance === undefined || output_balance === undefined) {
+      throw new Error("Invalid token, out_given_in");
+    }
+
     return 1;
   }
 
