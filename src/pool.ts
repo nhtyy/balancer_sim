@@ -4,19 +4,20 @@ import { Pool, Rebalance } from "./interfaces.types";
 
 export class BasePool implements Pool {
   tokens: Array<Ticker>;
-  balances: Map<Ticker, number>;
+  balances: Map<Ticker, TokenBalance>;
   rebalance: Rebalance;
-  totalLiquidity: number;
+  total_liquidity: number;
 
   constructor(
     tokens: Array<Ticker>,
     balances: Map<Ticker, TokenBalance>,
-    rebalance: Rebalance
+    rebalance: Rebalance,
+    starting_liquidity: number
   ) {
     this.tokens = tokens;
     this.balances = balances;
     this.rebalance = rebalance;
-    this.totalLiquidity = 0;
+    this.total_liquidity = starting_liquidity;
   }
 
   spot_price(time: number, input: Ticker, output: Ticker): number {
@@ -77,11 +78,6 @@ export class BasePool implements Pool {
     return 1;
   }
 
-  seed_liquidity(
-    amounts: Map<Ticker, TokenBalance>,
-    liquidity_amount: number
-  ): void {}
-
   add_liquidity(amount: number): void {}
 }
 
@@ -89,8 +85,9 @@ export class LinearRebalancePool extends BasePool {
   constructor(
     tokens: Array<Ticker>,
     balances: Map<Ticker, TokenBalance>,
-    rebalance: LinearRebalance
+    rebalance: LinearRebalance,
+    starting_liquidity: number
   ) {
-    super(tokens, balances, rebalance);
+    super(tokens, balances, rebalance, starting_liquidity);
   }
 }

@@ -12,7 +12,7 @@ export interface Pool {
   tokens: Array<Ticker>;
   balances: Map<Ticker, number>;
   rebalance: Rebalance;
-  totalLiquidity: number;
+  total_liquidity: number;
 
   /**
    *
@@ -83,16 +83,6 @@ export interface Pool {
     output: Ticker,
     price: number
   ): TokenBalance;
-
-  /**
-   *
-   * @param amounts
-   * @param liquidity_amount
-   */
-  seed_liquidity(
-    amounts: Map<Ticker, TokenBalance>,
-    liquidity_amount: number
-  ): void;
 
   /**
    *

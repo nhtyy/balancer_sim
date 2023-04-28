@@ -1,11 +1,11 @@
-import { Pool } from "./pool";
+import { Pool } from "./interfaces.types";
 
 export class State {
   height: number;
   pool: Pool;
 
-  constructor(height: number, pool: Pool) {
-    this.height = height;
+  constructor(pool: Pool) {
+    this.height = 0;
     this.pool = pool;
   }
 
