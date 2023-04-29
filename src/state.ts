@@ -5,7 +5,7 @@ export class State {
   pool: Pool;
 
   constructor(pool: Pool) {
-    this.height = 0;
+    this.height = 1;
     this.pool = pool;
   }
 

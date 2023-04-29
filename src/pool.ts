@@ -89,6 +89,7 @@ export class BasePool implements Pool {
     return 1;
   }
 
+  // see https://github.com/balancer/balancer-core/blob/f4ed5d65362a8d6cec21662fb6eae233b0babc1f/contracts/BPool.sol#L367
   add_liquidity(amount: number): void {}
 }
 
@@ -96,9 +97,18 @@ export class LinearRebalancePool extends BasePool {
   constructor(
     tokens: Array<Ticker>,
     balances: Map<Ticker, TokenBalance>,
-    rebalance: LinearRebalance,
-    starting_liquidity: number
+    starting_liquidity: number,
+    start_weights: Map<Ticker, number>,
+    target_weights: Map<Ticker, number>,
+    duration: number
   ) {
+    const rebalance = new LinearRebalance(
+      tokens,
+      start_weights,
+      target_weights,
+      duration
+    );
+
     super(tokens, balances, rebalance, starting_liquidity);
   }
 }

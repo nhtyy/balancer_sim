@@ -1,34 +1,26 @@
-import { State } from "./state";
-import { Ticker, TokenBalance } from "./common.types";
-import { BasePool, LinearRebalancePool } from "./pool";
-import { LinearRebalance } from "./rebalance";
+import { LinearRebalancePool } from "./pool";
 import { config, from_config } from "./config";
+import { State } from "./state";
+import { driver } from "./driver";
 
-// block time 12 seconds
-// 2 days in blocks
-const duration = (86400 / 12) * 2;
+const {
+  tokens,
+  seed_balances,
+  start_weights,
+  target_weights,
+  duration,
+  starting_liqudity,
+} = from_config(config);
 
-// arbitrary starting liquidity
-// see balancer-core/BPool.sol finalize() for more info
-const starting_liqudity: number = 1000;
+const pool = new LinearRebalancePool(
+  tokens,
+  seed_balances,
+  starting_liqudity,
+  start_weights,
+  target_weights,
+  duration
+);
 
-function drive() {
-  let { tokens, seed_balances, start_weights, target_weights } =
-    from_config(config);
+const state = new State(pool);
 
-  let rebalance = new LinearRebalance(
-    tokens,
-    start_weights,
-    target_weights,
-    duration
-  );
-
-  let pool = new LinearRebalancePool(
-    tokens,
-    seed_balances,
-    rebalance,
-    starting_liqudity
-  );
-
-  let state = new State(pool);
-}
+driver(state);
