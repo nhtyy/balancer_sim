@@ -16,10 +16,6 @@ export function driver(state: State, hooks: ((state: State) => void)[]) {
     console.log({
       spot_price: state.pool.spot_price(height, tokens[0], tokens[1]),
     });
-    console.log({
-      out_amount: state.pool.out_given_in(height, tokens[0], tokens[1], 5),
-    });
-    console.log({ message: state.message });
 
     state.advance();
   }

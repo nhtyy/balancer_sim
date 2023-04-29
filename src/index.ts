@@ -2,6 +2,7 @@ import { LinearRebalancePool } from "./pool";
 import { config, from_config } from "./config";
 import { State } from "./state";
 import { driver } from "./driver";
+import { two_token_arb } from "./hooks";
 
 const {
   tokens,
@@ -23,4 +24,6 @@ const pool = new LinearRebalancePool(
 
 const state = new State(pool);
 
-driver(state, []);
+driver(state, [two_token_arb]);
+
+console.log({ bleed: state.bleed });

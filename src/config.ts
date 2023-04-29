@@ -6,16 +6,16 @@ export const config: Config = {
       ticker: "ETH",
       startWeight: 0.5,
       targetWeight: 0.7,
-      seedBalance: 200,
+      seedBalance: 2631.57895,
     },
     {
       ticker: "BTC",
       startWeight: 0.5,
       targetWeight: 0.3,
-      seedBalance: 100,
+      seedBalance: 172.413793,
     },
   ],
-  duration_blocks: 10,
+  duration_blocks: (86400 / 12) * 1.5,
   starting_liqudity: 1000,
 };
 

@@ -3,12 +3,12 @@ import { Pool } from "./interfaces.types";
 export class State {
   height: number;
   pool: Pool;
-  message: string;
+  bleed: number;
 
   constructor(pool: Pool) {
     this.height = 0;
     this.pool = pool;
-    this.message = "";
+    this.bleed = 0;
   }
 
   advance() {
