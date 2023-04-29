@@ -12,7 +12,7 @@ export interface Pool {
   tokens: Array<Ticker>;
   balances: Map<Ticker, number>;
   rebalance: Rebalance;
-  total_liquidity: number;
+  total_index_tokens: number;
 
   /**
    *
@@ -95,5 +95,5 @@ export interface State {
   height: number;
   pool: Pool;
 
-  advanace(): void;
+  advance(): void;
 }
