@@ -67,7 +67,7 @@ export class BasePool implements Pool {
     }
 
     let power = input_weight / output_weight;
-    let frac = amount / (input_balance + amount);
+    let frac = input_balance / (input_balance + amount);
     return output_balance * (1 - frac ** power);
   }
 

@@ -1,10 +1,12 @@
+import { Ticker, TokenBalance } from "./common.types";
+
 export const config: Config = {
   seeds: [
     {
       ticker: "ETH",
       startWeight: 0.5,
       targetWeight: 0.7,
-      seedBalance: 100,
+      seedBalance: 200,
     },
     {
       ticker: "BTC",
@@ -13,15 +15,15 @@ export const config: Config = {
       seedBalance: 100,
     },
   ],
-  duration_blocks: (86400 / 12) * 2,
+  duration_blocks: 10,
   starting_liqudity: 1000,
 };
 
 export type Seed = {
-  ticker: string;
+  ticker: Ticker;
+  seedBalance: TokenBalance;
   startWeight: number;
   targetWeight: number;
-  seedBalance: number;
 };
 
 export type Config = {
@@ -31,10 +33,10 @@ export type Config = {
 };
 
 export function from_config(config: Config): {
-  tokens: string[];
-  seed_balances: Map<string, number>;
-  start_weights: Map<string, number>;
-  target_weights: Map<string, number>;
+  tokens: Ticker[];
+  seed_balances: Map<Ticker, TokenBalance>;
+  start_weights: Map<Ticker, number>;
+  target_weights: Map<Ticker, number>;
   duration: number;
   starting_liqudity: number;
 } {

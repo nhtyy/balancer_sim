@@ -23,4 +23,4 @@ const pool = new LinearRebalancePool(
 
 const state = new State(pool);
 
-driver(state);
+driver(state, []);
