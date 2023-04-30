@@ -11,6 +11,7 @@ const {
   target_weights,
   duration,
   starting_liqudity,
+  prices,
 } = from_config(config);
 
 const pool = new LinearRebalancePool(
@@ -22,6 +23,6 @@ const pool = new LinearRebalancePool(
   duration
 );
 
-const state = new State(pool);
+const state = new State(pool, prices);
 
 driver(state, [two_token_arb]);

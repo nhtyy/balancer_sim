@@ -16,10 +16,10 @@ export function driver(state: State, hooks: ((state: State) => void)[]) {
     // hooks can mutate state
     hooks.forEach((hook) => hook(state));
 
-    console.log({ height });
-    console.log({
-      spot_price: state.pool.spot_price(height, tokens[0], tokens[1]),
-    });
+    // console.log({ height });
+    // console.log({
+    //   spot_price: state.pool.spot_price(height, tokens[0], tokens[1]),
+    // });
 
     state.advance();
   }
