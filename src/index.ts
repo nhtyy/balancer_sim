@@ -24,6 +24,16 @@ const pool = new LinearRebalancePool(
 
 const state = new State(pool);
 
+const before_balance_0 = state.pool.balances.get(tokens[0]);
+const before_balance_1 = state.pool.balances.get(tokens[1]);
+
 driver(state, [two_token_arb]);
 
 console.log({ bleed: state.bleed });
+console.log({ arbs: state.arbs });
+console.log({
+  before_balance_0,
+  before_balance_1,
+  after_balance_0: state.pool.balances.get(tokens[0]),
+  after_balance_1: state.pool.balances.get(tokens[1]),
+});

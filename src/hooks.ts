@@ -7,36 +7,34 @@ export function two_token_arb(state: State): void {
 
   const btc_usd = 29_000;
   const eth_usd = 1900;
-  const gas_cost = 100;
+  const gas_cost_usd = 100;
 
-  const price_0_in_1 = btc_usd / eth_usd;
-  console.log({ price_0_in_1 });
-  console.log({ token0: tokens[0], token1: tokens[1] });
+  const price_1_in_0 = btc_usd / eth_usd;
 
-  console.log({ spot_price: pool.spot_price(time, tokens[0], tokens[1]) });
-
-  // 1. Buy token 0 with token 1
-  // amount in is token 1 eth
+  // amount in token 0 eth
   const amount_in = pool.in_given_price(
     time,
     tokens[0],
     tokens[1],
-    price_0_in_1
+    price_1_in_0
   );
 
-  // 2. Sell token 0 for token 1
-  // amount in token 0 btc
+  // amount in token 1 btc
   const amount_out = pool.out_given_in(time, tokens[0], tokens[1], amount_in);
-
-  console.log({ amount_in, amount_out });
-
-  const amount_out_market_price = amount_out * btc_usd;
   const amount_in_market_price = amount_in * eth_usd;
+  const amount_out_market_price = amount_out * btc_usd;
 
-  const profit = amount_out_market_price - amount_in_market_price - gas_cost;
-  console.log({ profit });
+  const profit =
+    amount_out_market_price - amount_in_market_price - gas_cost_usd;
+
   if (profit > 0) {
-    state.bleed += gas_cost + profit;
+    state.arbs += 1;
+    state.bleed += gas_cost_usd + profit;
     state.pool.swap_in(time, tokens[0], tokens[1], amount_in);
   }
+
+  console.log({ spot_price: pool.spot_price(time, tokens[0], tokens[1]) });
+  console.log({ price_1_in_0 });
+  console.log({ profit });
+  console.log({ amount_in, amount_out });
 }
