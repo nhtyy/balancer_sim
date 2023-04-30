@@ -12,7 +12,7 @@ export interface Pool {
   tokens: Array<Ticker>;
   balances: Map<Ticker, number>;
   rebalance: Rebalance;
-  total_index_tokens: number;
+  token_supply: number;
 
   /**
    *

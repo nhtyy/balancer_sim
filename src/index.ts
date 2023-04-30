@@ -10,14 +10,14 @@ const {
   start_weights,
   target_weights,
   duration,
-  starting_liqudity,
+  starting_token_supply,
   prices,
 } = from_config(config);
 
 const pool = new LinearRebalancePool(
   tokens,
   seed_balances,
-  starting_liqudity,
+  starting_token_supply,
   start_weights,
   target_weights,
   duration

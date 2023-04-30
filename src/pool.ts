@@ -6,18 +6,18 @@ export class BasePool implements Pool {
   tokens: Array<Ticker>;
   balances: Map<Ticker, TokenBalance>;
   rebalance: Rebalance;
-  total_index_tokens: number;
+  token_supply: number;
 
   constructor(
     tokens: Array<Ticker>,
     balances: Map<Ticker, TokenBalance>,
     rebalance: Rebalance,
-    starting_liquidity: number
+    starting_token_supply: number
   ) {
     this.tokens = tokens;
     this.balances = balances;
     this.rebalance = rebalance;
-    this.total_index_tokens = starting_liquidity;
+    this.token_supply = starting_token_supply;
   }
 
   spot_price(time: number, input: Ticker, output: Ticker): number {
@@ -87,8 +87,11 @@ export class BasePool implements Pool {
     }
 
     let power = output_weight / input_weight;
-    
-    return input_balance * (((output_balance / (output_balance - amount)) ** power) - 1);
+
+    return (
+      input_balance *
+      ((output_balance / (output_balance - amount)) ** power - 1)
+    );
   }
 
   in_given_price(
@@ -106,26 +109,26 @@ export class BasePool implements Pool {
       throw new Error("Invalid token, in_given_price");
     }
 
-    let old_price = (input_balance / input_weight) / (output_balance / output_weight);
+    let old_price =
+      input_balance / input_weight / (output_balance / output_weight);
 
     let power = output_weight / (output_weight + input_weight);
 
-    return input_balance * (((price / old_price) ** power) - 1);
+    return input_balance * ((price / old_price) ** power - 1);
   }
 
   // see https://github.com/balancer/balancer-core/blob/f4ed5d65362a8d6cec21662fb6eae233b0babc1f/contracts/BPool.sol#L367
   add_liquidity(amount: number): void {
-    let total = this.total_index_tokens;
+    let total = this.token_supply;
     let ratio = amount / total;
 
-    for (let token of this.balances.keys())
-    {
+    for (let token of this.balances.keys()) {
       let bal = this.balances.get(token);
       let amount_in = ratio * bal!;
       this.balances.set(token, bal! + amount_in);
     }
 
-    this.total_index_tokens += amount;
+    this.token_supply += amount;
   }
 }
 
@@ -133,7 +136,7 @@ export class LinearRebalancePool extends BasePool {
   constructor(
     tokens: Array<Ticker>,
     balances: Map<Ticker, TokenBalance>,
-    starting_liquidity: number,
+    starting_token_supply: number,
     start_weights: Map<Ticker, number>,
     target_weights: Map<Ticker, number>,
     duration: number
@@ -145,6 +148,6 @@ export class LinearRebalancePool extends BasePool {
       duration
     );
 
-    super(tokens, balances, rebalance, starting_liquidity);
+    super(tokens, balances, rebalance, starting_token_supply);
   }
 }
